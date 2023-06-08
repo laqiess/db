@@ -16,74 +16,72 @@ namespace bd
         private String name; // имя
         private String surname; // фамилия
         private String product; // товар
-        private String price; // цена
+        private double price; // цена
 
         public Buyer()
         {
             name = "";
             surname = "";
             product = "";
-            price = "";
+            price = 0;
         }
 
         // конструктор    
-        public Buyer(string name1, string surname1, string product1, string price1)
+        public Buyer(string name1, string surname1, string product1, double price1)
         {
-            name = name1;
-            surname = surname1;
-            product = product1;
-            price = price1;
+            Name = name1;
+            Surname = surname1;
+            Product = product1;
+            Price = price1;
         }
 
-        public void name_set(string name1)
+        public string Name
         {
-            name = name1;
+            //пример свойства
+            get { return name; }
+            set
+            {
+                name = value;
+                //Ключевое слово value ссылается на значение,
+                //которое клиентский код пытается присвоить свойству или индексатору
+            }
         }
 
-        public string name_get()
+        public string Surname
         {
-            return name;
+            get { return surname; }
+            set
+            {
+                surname = value;
+            }
+        }
+        public string Product
+        {
+            get { return product; }
+            set
+            {
+                product = value;
+            }
         }
 
-        public void surname_set(string surname1)
+        // геттер и сеттер стоимости оплаты
+        public double Price
         {
-            surname = surname1;
+            get { return price; }
+            set
+            {
+                // значение не может быть отрицательным
+                if (value < 0)
+                {
+                    throw new Exception("Price can't be negative");
+                }
+                else
+                {
+                    price = value;
+                }
+
+            }
         }
-
-        public string surname_get()
-        {
-            return surname;
-        }
-
-        public void product_set(string phone1)
-        {
-            product = phone1;
-        }
-
-        public string product_get()
-        {
-            return product;
-        }
-
-        public void price_set(string email1)
-        {
-            price = email1;
-        }
-
-        public string price_get()
-        {
-            return price;
-        }
-
-
-        public string Name { get => name; set => name = value; }
-
-        public string Surname { get => surname; set => surname = value; }
-
-        public string Product { get => product; set => product = value; }
-
-        public string Price { get => price; set => price = value; }
-
 
     }
 }

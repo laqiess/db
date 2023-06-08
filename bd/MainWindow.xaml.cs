@@ -40,8 +40,8 @@ namespace bd
         }
 
 
-        // Добавляет новую строку в таблицу
-        private void button_add_row_Click(object sender, RoutedEventArgs e)
+
+        private bool AddingCheck()
         {
             SolidColorBrush error_color = new SolidColorBrush();
             SolidColorBrush usual_color = new SolidColorBrush();
@@ -52,106 +52,89 @@ namespace bd
             usual_color.Color = Colors.White;
 
             bool hasError = false;
-            // если поле ввода имени пустое
-            if (TextBox_name.Text == "")
-            {
-                TextBox_name.Background = error_color;
-                hasError = true;
-                return;
-            }
-            else
-            {
-                TextBox_name.Background = usual_color;
-            }
 
-            // если поле ввода фамилии пустое
-            if (TextBox_surname.Text == "")
-            {
-                TextBox_surname.Background = error_color;
-                hasError = true;
-                return;
-            }
-            else
-            {
-                TextBox_surname.Background = usual_color;
-            }
+            //проверка имени
+            ChangeColor(TextBox_name,ref hasError);
 
+            //проверка фамилии
+            ChangeColor(TextBox_surname, ref hasError);
 
-            if (TextBox_product.Text == "")
-            {
-                TextBox_product.Background = error_color;
-                hasError = true;
-                return;
-            }
-            else
-            {
-                TextBox_product.Background = usual_color;
-            }
-
-
+            //проверка товара
+            ChangeColor(TextBox_product, ref hasError);
+            
             if (TextBox_price.Text == "")
             {
                 TextBox_price.Background = error_color;
                 hasError = true;
-                return;
+                
             }
-            else
-            {
-                TextBox_price.Background = usual_color;
-            }
-
-            // если в имени есть цифры
-            if (Regex.IsMatch(TextBox_name.Text, @"[0-9]"))
-            {
-                TextBox_name.Background = error_color;
-                hasError = true;
-                return;
-            }
-            else
-            {
-                TextBox_name.Background = usual_color;
-            }
-
-            // если в фамилии есть цифры
-            if (Regex.IsMatch(TextBox_surname.Text, @"[0-9]"))
-            {
-                TextBox_surname.Background = error_color;
-                hasError = true;
-                return;
-            }
-            else
-            {
-                TextBox_surname.Background = usual_color;
-            }
-
-
-            if (Regex.IsMatch(TextBox_product.Text, @"[0-9]"))
-            {
-                TextBox_product.Background = error_color;
-                hasError = true;
-                return;
-            }
-            else
-            {
-                TextBox_product.Background = usual_color;
-            }
-
-
-            if (Regex.IsMatch(TextBox_price.Text, @"[a-zA-Z]") || Regex.IsMatch(TextBox_price.Text, @"[а-яА-Я]"))
+            // если нельзя преобразовать в double 
+            else if (!double.TryParse(TextBox_price.Text, out double payment))
             {
                 TextBox_price.Background = error_color;
                 hasError = true;
-                return;
+            }
+            // если значение меньше нуля 
+            else if (double.Parse(TextBox_price.Text) < 0)
+            {
+                TextBox_price.Background = error_color;
+                hasError = true;
             }
             else
             {
                 TextBox_price.Background = usual_color;
             }
 
-            // если проверка прошла, добавить данные
-            data.add_data(TextBox_name.Text, TextBox_surname.Text, TextBox_product.Text, TextBox_price.Text);
+            return hasError;
+        }
+
+
+        private void ChangeColor(TextBox f1,ref bool has_error)
+        {
+            SolidColorBrush error_color = new SolidColorBrush();
+            SolidColorBrush usual_color = new SolidColorBrush();
+
+            ///цвет ошибочных полей 
+            error_color.Color = Color.FromRgb(252, 187, 187);
+            /////цвет полей обычный
+            usual_color.Color = Colors.White;
+
+
+            // если поле ввода имени пустое
+            if (f1.Text == "")
+            {
+                f1.Background = error_color;
+                has_error = true;
+            }
+            else
+            {
+                f1.Background = usual_color;
+            }
+
 
         }
+
+
+
+        // Добавляет новую строку в таблицу
+        private void button_add_row_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (AddingCheck() == false)
+            {
+                string name1 = TextBox_name.Text;
+                string surname1 = TextBox_surname.Text;
+                // Convert преобразует строковые данные
+                string product1 = TextBox_product.Text;
+                // ToDouble - к типу double
+                double price1 = Convert.ToDouble(TextBox_price.Text);
+                // если проверка прошла, добавить данные
+                data.add_data(name1,surname1,product1,price1);
+            }
+        }
+
+
+
 
         // изменение полей ввода при выделении строчек
         private void datagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -162,11 +145,18 @@ namespace bd
         // удаление выделенной строки
         private void Button_del_row_Click(object sender, RoutedEventArgs e)
         {
-            // в index записывается номер выделенной строки
-            if (datagrid.SelectedIndex <= datagrid.Items.Count && datagrid.SelectedIndex >= 0)
+
+            // если пользователь не выбрал строку
+            // SelectedIndex - индекс строки первого выделенного элемента
+            // по умолчанию -1
+            if (datagrid.SelectedIndex == -1)
             {
-                // удаление строчки
-                data.del_line(datagrid.SelectedIndex, datagrid.Items.Count);
+            }
+            else
+            {    
+                int row = datagrid.SelectedIndex;
+                // удаляем элемент из коллекции под данным индексом
+                data.data.RemoveAt(row);
             }
         }
 
@@ -194,7 +184,7 @@ namespace bd
             if (sfd.ShowDialog() == true)
             {
                 // сохранение данных в файл
-                data.save_csv(datagrid.Items.Count, sfd.FileName);
+                data.save_csv( sfd.FileName);
             }
         }
 

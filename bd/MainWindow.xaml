@@ -5,41 +5,66 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:bd"
         mc:Ignorable="d"
-       Title="Покупатель" Height="410" Width="592">
+       Title="Покупатель" FontStyle="Normal" Height="410" Width="592">
+     <!-- @author Ключерев Артемий-->
     <Window.Background>
+        <!-- LinearGradientBrush - градиентная кисть, представляет плавный 
+            переход от одного цвета к другому-->
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FFD6DAED" Offset="0"/>
-            <GradientStop Color="#FF374698" Offset="1"/>
-            <GradientStop Color="#FF6E78B1" Offset="0.48"/>
+            <!-- Для указания цвета и точек, от которых начинается переход, 
+                    используется объект GradientStop. Его свойство Color указывает 
+                    на цвет, а свойство Offset - на точку, с которой начинается переход.-->
+            <GradientStop Color="#FFF8F9F9"/>
+            <GradientStop Color="#FF60EEE9" Offset="0.991"/>
+            <GradientStop Color="#FF8AF1D3" Offset="0.53"/>
         </LinearGradientBrush>
+        <!-- цвет фона окна -->
     </Window.Background>
     <Grid>
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FFF8F9F9"/>
-                <GradientStop Color="#FF60EEE9" Offset="0.991"/>
-                <GradientStop Color="#FF8AF1D3" Offset="0.53"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+        <!--  -->
+        <!-- 
+        Name - название элемента, которое используется в коде 
+        HorizontalAlignment - горизонтальное выравнивание (Left, Right, Center (положение по центру), Stretch (растяжение по всей ширине))
+        VerticalAlignment - вертикальное выравнивание (Top (положение в верху контейнера), Bottom (положение внизу), Center (положение по центру), Stretch (растяжение по всей высоте))
+        Height - высота
+        Margin - устанавливает отступы вокруг элемента
+        Width - ширина
+        Content - надпись на элементе. "_" перед текстом делает первую букву горячей клавишей
+        Click - обработчик собития
+        TextWrapping позволяет переносить текст при установке этого свойства TextWrapping="Wrap"
+        (по умолчанию NoWrap - не переносить по словам)
+        -->
+
+        <!-- x - пространство имён-->
+        <!-- DataGrid - элемент управления, отображающий данные в настраиваемой сетке -->
         <DataGrid x:Name="datagrid" HorizontalAlignment="Left" Height="252" Margin="10,104,0,0" VerticalAlignment="Top" Width="413" SelectionChanged="datagrid_SelectionChanged"/>
         <Button x:Name="button_add_row" Content="_Добавить строку" HorizontalAlignment="Left" Margin="39,42,0,0" VerticalAlignment="Top" Width="120" Height="33" Click="button_add_row_Click"/>
-        <TextBox x:Name="TextBox_name" HorizontalAlignment="Left" Margin="448,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="27"/>
-        <TextBox x:Name="TextBox_surname" HorizontalAlignment="Left" Margin="449,192,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.499,-1.512" Height="27"/>
-        <TextBox x:Name="TextBox_product" HorizontalAlignment="Left" Margin="448,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="27"/>
+        <TextBox x:Name="TextBox_name" HorizontalAlignment="Left" Margin="448,122,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="27" Text="Артем"/>
+        <TextBox x:Name="TextBox_surname" HorizontalAlignment="Left" Margin="449,192,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.499,-1.512" Height="27" Text="Ключерев"/>
+        <TextBox x:Name="TextBox_product" HorizontalAlignment="Left" Margin="448,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="27" Text="Хлеб"/>
         <Label Content="Имя" HorizontalAlignment="Left" Margin="450,96,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.079,-0.037"/>
         <Label Content="Фамилия" HorizontalAlignment="Left" Margin="450,166,0,0" VerticalAlignment="Top"/>
         <Label Content="Товар" HorizontalAlignment="Left" Margin="450,231,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="Button_del_row" Content="_Удалить строчку" HorizontalAlignment="Left" Margin="217,42,0,0" VerticalAlignment="Top" Height="33" Width="128" Click="Button_del_row_Click"/>
+        <Button x:Name="Button_del_row" Content="_Удалить строчку"  HorizontalAlignment="Left" Margin="217,42,0,0" VerticalAlignment="Top" Height="33" Width="128" Click="Button_del_row_Click"/>
+        <Label x:Name="Label_email" Content="Цена" HorizontalAlignment="Left" Margin="449,303,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.687,-0.783"/>
+        <TextBox x:Name="TextBox_price" HorizontalAlignment="Left" Margin="448,329,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.235,0.615" Height="27" Text="35"/>
+        <Button x:Name="Button_del_all" Content="Удалить все" HorizontalAlignment="Left" Margin="407,42,0,0" VerticalAlignment="Top" Height="33" Width="128" Click="Button_del_all_Click"/>
+
+
+        <!-- Класс Menu позволяет организовывать элементы, связанные с командами и 
+        обработчиками событий, в иерархическом порядке. Каждый элемент Menu 
+        содержит коллекцию элементов MenuItem.-->
+        <!-- 
+        Header - текст на пункте меню
+        Click - обработчик события нажатия на пункт меню
+        -->
         <Menu Height="25" VerticalAlignment="Top">
             <MenuItem Header="Меню">
-                <MenuItem Header="Сохранить" Click="MenuItem_SaveToFile_Click"></MenuItem>
+                <MenuItem Header="Сохранить" Click="MenuItem_SaveToFile_Click"/>
                 <MenuItem Header="Открыть" Click="MenuItem_ReadFile_Click"></MenuItem>
                 <MenuItem Header="Справка" Click="MenuItem_Reference_Click"></MenuItem>
                 <MenuItem Header="Закрыть"  Click="MenuItem_Exit_Click"></MenuItem>
             </MenuItem>
         </Menu>
-        <Label x:Name="Label_email" Content="Цена" HorizontalAlignment="Left" Margin="449,303,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.687,-0.783"/>
-        <TextBox x:Name="TextBox_price" HorizontalAlignment="Left" Margin="448,329,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.235,0.615" Height="27"/>
-        <Button x:Name="Button_del_all" Content="Удалить все" HorizontalAlignment="Left" Margin="407,42,0,0" VerticalAlignment="Top" Height="33" Width="128" Click="Button_del_all_Click"/>
-    </Grid>
+           </Grid>
 </Window>
